@@ -5,12 +5,15 @@ import pandas as pd
 from io import BytesIO
 
 load_dotenv()
-s3 = boto3.client(
+try:
+    s3 = boto3.client(
     's3',
     aws_access_key_id=os.getenv('ACCESS_KEY'),
     aws_secret_access_key=os.getenv('SECRET_ACCESS_KEY'),
     region_name=os.getenv('REGION_NAME')
 )
+except Exception as e:
+    print(f"unexpected error occured{e}")
 
 bucket_name = os.getenv("S3_BUCKET")
 
@@ -38,13 +41,7 @@ for obj in response.get('Contents', []):
 master_df.to_csv('weatherdatafile.csv',index=False)
 print("File is saved !!")
     
-'''follow up work :
-1. handle redundant data loading 
-2. wrap the code into try catch finally blocks , implement error handling '''
 
 
 
-
-
-   
     
